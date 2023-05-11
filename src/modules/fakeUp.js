@@ -6,14 +6,15 @@
 import React,{useState} from 'react';
 import { Text, View,StyleSheet,TextInput,Alert,TouchableOpacity } from 'react-native'
 
-export default function SignUpScreen (){
+export default function FakeUp (){
    const [name,setName] = useState('');
    const [email,setEmail] = useState('');
    const [password,setPassword] = useState('');
    const [confirmPassword,setConfirmPassword] = useState('');
    const [display,setDisplay] = useState(false);
    const [error,setError] = useState({field:'',message:''});
-   const [message,setMessage] = useState('');
+  
+//    const [message,setMessage] = useState('');
 
 
 //    const onSubmit = ()=>{
@@ -53,32 +54,41 @@ export default function SignUpScreen (){
 //  ---------------------------------------------------
 const onSubmit = ()=>{
 
-
+    let loginError = {field:'',message:''};
     if (name === ''){
-       
-    setMessage('is required');
+     loginError.field = 'name'; 
+    loginError.message === 'name is required';
+    setError(loginError)
     }
     else if ( email === ''){
-        setMessage('is required');
+        loginError.field === 'email'; 
+        loginError.message === ' email is required';
+        setError(loginError);
     }
     else if (password === ''){
-        setMessage('required');
+        loginError.field === 'password'; 
+        loginError.message === ' password is required';
+        setError(loginError);
     }
     else if (confirmPassword === ''){
-        setMessage('required');
+        loginError.field === 'confirmPassword';
+        loginError.message === ' password is required';
+        setError(loginError)
     }
 
     else {
-        setMessage('');
+       
+        setError.message(null);
+        setError.field(null);
     //   setDisplay(true);  
     console.log(name,email,password,confirmPassword);
     Alert.alert('form Submited');
-    setName('');
-    setEmail('');
-    setPassword('');
-    setConfirmPassword('');
+    // setName('');
+    // setEmail('');
+    // setPassword('');
+    // setConfirmPassword('');
     }
-    // setDisplay(true);  
+    setDisplay(true);  
     // setName('');
     // setEmail('');
     // setPassword('');
@@ -87,6 +97,7 @@ const onSubmit = ()=>{
     return (
       <View style={styles.container}>
       <View style={{height:20}}/>
+      {error.message}
       
 
        <Text style={styles.title}>Sign up</Text>
@@ -101,7 +112,7 @@ const onSubmit = ()=>{
         value={name}
 
       />
-      { message ? (<Text style={styles.message}>{`name ${message}`}</Text>) : null }
+      { error.field === 'name' && (<Text style={styles.message}>{error.message}</Text>) }
        {/* {error.field === 'name' && (<Text style={styles.subtitle}>{error.message}</Text>)} */}
      < View style={{height:25}}/>
        <TextInput
@@ -112,7 +123,7 @@ const onSubmit = ()=>{
         value={email}
 
       />
-      { message ? (<Text style={styles.message}>{`email ${message}`}</Text>) : null }
+      { error.field === 'email' && (<Text style={styles.message}>{error.message}</Text>) }
       {/* {error.field === 'email' && (<Text style={styles.subtitle}>{error.message}</Text>)} */}
       <View style={{height:25}}/>
         <TextInput
@@ -123,7 +134,7 @@ const onSubmit = ()=>{
         value={password}
         secureTextEntry={true}
       />
-        { message ? (<Text style={styles.message}>{`password ${message}`}</Text>) : null }
+        { error.field === 'password' && (<Text style={styles.message}>{error.message}</Text>) }
       
        
       <View style={{height:25}}/>
@@ -138,7 +149,7 @@ const onSubmit = ()=>{
         value={confirmPassword}
         secureTextEntry={true}
       />
-      { message ? (<Text style={styles.message}>{'confirm your password'}</Text>) : null }
+      { error.field === confirmPassword && (<Text style={styles.message}>{error.message}</Text>) }
        
         <View style={{height:25}}/>
        <TouchableOpacity 
