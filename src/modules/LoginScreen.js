@@ -1,7 +1,8 @@
+/* eslint-disable prettier/prettier */
 /* eslint-disable react-native/no-inline-styles */
 /* eslint-disable prettier/prettier */
 import React from 'react'
-import { Text, View,StyleSheet,Image,TextInput,Button,Alert,TouchableOpacity } from 'react-native'
+import { Text, View,StyleSheet,Image,TextInput,Alert,TouchableOpacity } from 'react-native';
 
 export default function LoginScreen (){
     return (
@@ -90,7 +91,4 @@ input:{
   width:'100%',
   height:58,
   color:'white',
- 
-
-}
-});
+ }});
