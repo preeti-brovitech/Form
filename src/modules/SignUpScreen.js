@@ -5,15 +5,18 @@
 /* eslint-disable prettier/prettier */
 import React,{useState} from 'react';
 import { Text, View,StyleSheet,TextInput,Alert,TouchableOpacity } from 'react-native'
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-export default function SignUpScreen (){
+export default function SignUpScreen (props){
    const [name,setName] = useState('');
+   
    const [email,setEmail] = useState('');
    const [password,setPassword] = useState('');
    const [confirmPassword,setConfirmPassword] = useState('');
    const [display,setDisplay] = useState(false);
    const [error,setError] = useState({field:'',message:''});
    const [message,setMessage] = useState('');
+   const {navigation} = props;
 
 
 //    const onSubmit = ()=>{
@@ -50,6 +53,25 @@ export default function SignUpScreen (){
 //     // setPassword('');
 //     // setConfirmPassword('');
 // };
+
+const value = {
+  Name:name,
+  Email:email,
+  Password:password,
+};
+
+
+const saveData = async()=>{
+  try {
+   
+    await AsyncStorage.setItem('user', JSON.stringify(value));
+    console.log(value);
+    
+  } catch (e) {
+    console.log(error);
+  }
+};
+
 //  ---------------------------------------------------
 const onSubmit = ()=>{
 
@@ -59,20 +81,35 @@ const onSubmit = ()=>{
     setMessage('is required');
     }
     else if ( email === ''){
+      
         setMessage('is required');
     }
     else if (password === ''){
+     
         setMessage('required');
     }
     else if (confirmPassword === ''){
+    
         setMessage('required');
+    }
+    else if (password !== confirmPassword){
+      setDisplay(true);
+      setMessage('required');
     }
 
     else {
+      setDisplay(false);
         setMessage('');
-    //   setDisplay(true);  
+        saveData();
+     
     console.log(name,email,password,confirmPassword);
-    Alert.alert('form Submited');
+    Alert.alert('form submited');
+    navigation.navigate('dashboard',{
+      name:name,
+      email:email,
+
+    });
+
     setName('');
     setEmail('');
     setPassword('');
@@ -84,6 +121,9 @@ const onSubmit = ()=>{
     // setPassword('');
     // setConfirmPassword('');
 };
+
+const onClick = ()=>{
+  navigation.navigate('login');};
     return (
       <View style={styles.container}>
       <View style={{height:20}}/>
@@ -138,7 +178,8 @@ const onSubmit = ()=>{
         value={confirmPassword}
         secureTextEntry={true}
       />
-      { message ? (<Text style={styles.message}>{'confirm your password'}</Text>) : null }
+      
+      { display ? (<Text style={styles.message}>{'password not match'}</Text>) : null}
        
         <View style={{height:25}}/>
        <TouchableOpacity 
@@ -148,8 +189,13 @@ const onSubmit = ()=>{
        <Text style = {styles.btnText}>Signup </Text>
       </TouchableOpacity>
       <View style={{height:25}}/>
-      <Text style={styles.subtitle}>Already have an account?Login</Text>
-      {display ? (   <Text style={styles.title}>{name} {email}{password}{confirmPassword}</Text>) : null}
+      <Text style={styles.subtitle}>Already have an account?
+      <TouchableOpacity onPress={onClick}>
+     
+        <Text style={styles.link}>Login</Text>
+        </TouchableOpacity></Text>
+
+      {/* {display ? (   <Text style={styles.title}>{name} {email}{password}{confirmPassword}</Text>) : null} */}
    
       </View>
     );
@@ -206,6 +252,12 @@ img:{
   height:158,
 
 },
+link:{
+  color:'#2BC990',
+  fontWeight:'400',
+  fontSize:16,
+  lineHeight:19,
+  },
 input:{
   paddingHorizontal:20,
   borderColor:'white',
@@ -214,4 +266,5 @@ input:{
   width:'100%',
   height:58,
   color:'white',
-}});
+},
+});

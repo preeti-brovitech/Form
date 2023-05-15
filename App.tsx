@@ -1,31 +1,23 @@
 /* eslint-disable react-native/no-inline-styles */
 /* eslint-disable prettier/prettier */
-import React from 'react'
-import {View,StyleSheet } from 'react-native';
+import * as React from 'react';
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import LoginScreen from './src/modules/LoginScreen';
 import SignUpScreen from './src/modules/SignUpScreen';
-import FakeUp from './src/modules/fakeUp';
+import DashboardScreen from './src/modules/DashboardScreen';
 
+const Stack = createNativeStackNavigator();
 
-export default function App (){
-    return (
-      <View style={styles.container}>
-      <SignUpScreen/>
-   
-      </View>
-    );
-  }
-
-
-
-
-const styles = StyleSheet.create({
-  container:{
-    backgroundColor:'#0A0171',
-    flex:1,
-    // alignItems:'center',
-    // justifyContent:'center',
-    // paddingHorizontal:20,
-  },
-
-});
+export default function App() {
+  return (
+    <NavigationContainer>
+        <Stack.Navigator screenOptions={{headerShown:false}}>
+        <Stack.Screen name="login" component={LoginScreen} />
+        <Stack.Screen name="signUp" component={SignUpScreen} />
+        <Stack.Screen name="dashboard" component={DashboardScreen} />
+      </Stack.Navigator>
+    </NavigationContainer>
+  );
+}
 
