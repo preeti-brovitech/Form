@@ -4,18 +4,22 @@
 /* eslint-disable react-native/no-inline-styles */
 /* eslint-disable prettier/prettier */
 import React,{useState} from 'react';
-import { Text, View,StyleSheet,TextInput,Alert,TouchableOpacity } from 'react-native'
+import { Text, View,StyleSheet,TextInput,Alert,TouchableOpacity,ScrollView} from 'react-native'
 import AsyncStorage from '@react-native-async-storage/async-storage';
+
 
 export default function SignUpScreen (props){
    const [name,setName] = useState('');
    
    const [email,setEmail] = useState('');
+   const [isSelected, setIsSelected] = useState(false);
+   const [agree,setAgree] = useState('false');
    const [password,setPassword] = useState('');
    const [confirmPassword,setConfirmPassword] = useState('');
    const [display,setDisplay] = useState(false);
-   const [error,setError] = useState({field:'',message:''});
+   const [error,setError] = useState(false);
    const [message,setMessage] = useState('');
+   
    const {navigation} = props;
 
 
@@ -94,9 +98,12 @@ const onSubmit = ()=>{
     }
     else if (password !== confirmPassword){
       setDisplay(true);
-      setMessage('required');
+      
     }
-
+    else if (!isSelected){
+      setError(true);
+    }
+   
     else {
       setDisplay(false);
         setMessage('');
@@ -121,11 +128,17 @@ const onSubmit = ()=>{
     // setPassword('');
     // setConfirmPassword('');
 };
+const onBrovitech = ()=>{
+ console.log('term and condition');
+navigation.navigate('brovitech');
+};
+
 
 const onClick = ()=>{
   navigation.navigate('login');};
     return (
       <View style={styles.container}>
+        
       <View style={{height:20}}/>
       
 
@@ -180,11 +193,42 @@ const onClick = ()=>{
       />
       
       { display ? (<Text style={styles.message}>{'password not match'}</Text>) : null}
-       
+
+      <View style={{height:10}}/>
+      {/*------------------------------ checkbox----------------------------------- */}
+      <View>
+      {/* <TouchableOpacity onPress={onBrovitech}>
+        <Text style={styles.terms}>
+        Terms and condition applied  </Text>
+        </TouchableOpacity> */}
+        <View style={{top:25,right:25}}>
+         <TouchableOpacity onPress={onBrovitech}>
+     
+     <Text style={styles.linkme}>Term and condition</Text>
+     </TouchableOpacity>
+     </View>
+     
+
+        { display ? (<Text style={styles.message}>{'tick please'}</Text>) : null }
+        <View>
+          <TouchableOpacity style={styles.checkBox} 
+          value ={isSelected}
+          onPress={()=>setIsSelected(!isSelected)
+          }>
+            { isSelected &&  <Text style={styles.check}>✔️</Text>}
+          </TouchableOpacity>
+          { error && <Text style={{color:'red',right:25}}> please accept term and condition</Text> }
+        
+        </View>
+      </View>
+
+      
+
         <View style={{height:25}}/>
        <TouchableOpacity 
-       style={styles.btn}
+       style={[styles.btn,{backgroundColor:isSelected ? '#2BC990' : 'grey'}]}
        onPress={onSubmit}
+       
         >
        <Text style = {styles.btnText}>Signup </Text>
       </TouchableOpacity>
@@ -196,7 +240,7 @@ const onClick = ()=>{
         </TouchableOpacity></Text>
 
       {/* {display ? (   <Text style={styles.title}>{name} {email}{password}{confirmPassword}</Text>) : null} */}
-   
+     
       </View>
     );
   }
@@ -211,6 +255,20 @@ const styles = StyleSheet.create({
     alignItems:'center',
     justifyContent:'center',
     paddingHorizontal:20,
+  },
+  checkBox:{
+    width:25,
+    height:25,
+    borderWidth:2,
+    borderColor:'white',
+    right:65,
+    
+  },
+  check:{
+    fontSize:20,
+    color:'black',
+    bottom:1,
+    
   },
   btn:{
     backgroundColor: '#2BC990',
@@ -229,6 +287,11 @@ const styles = StyleSheet.create({
 
 
   },
+  terms:{
+    color:'white',
+    top:25,
+    right:30,
+  },
   title:{
     color:'#FFFFFF',
     fontWeight:'700',
@@ -239,7 +302,7 @@ const styles = StyleSheet.create({
 message:{
     color:'red',
     fontSize:16,
-    marginRight:160
+    marginRight:160,
 },
 subtitle:{
   color:'#FFFFFF',
@@ -257,6 +320,14 @@ link:{
   fontWeight:'400',
   fontSize:16,
   lineHeight:19,
+  },
+  linkme:{
+    color:'#2BC990',
+  fontWeight:'400',
+  fontSize:16,
+  lineHeight:19, 
+  
+
   },
 input:{
   paddingHorizontal:20,

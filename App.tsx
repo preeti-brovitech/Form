@@ -6,6 +6,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import LoginScreen from './src/modules/LoginScreen';
 import SignUpScreen from './src/modules/SignUpScreen';
 import DashboardScreen from './src/modules/DashboardScreen';
+import { WebComponent } from './src/modules/WebComponent';
 
 const Stack = createNativeStackNavigator();
 
@@ -16,6 +17,7 @@ export default function App() {
         <Stack.Screen name="login" component={LoginScreen} />
         <Stack.Screen name="signUp" component={SignUpScreen} />
         <Stack.Screen name="dashboard" component={DashboardScreen} />
+        <Stack.Screen name="brovitech" component={WebComponent} />
       </Stack.Navigator>
     </NavigationContainer>
   );
